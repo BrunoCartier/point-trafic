@@ -1,0 +1,13 @@
+{
+  "name": "point-trafic",
+  "description": "Le point trafic du 107.7 lu automatiquement dès qu'il est disponible",
+  "main": "app.js",
+  "author": "Bruno Cartier",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5"
+  }
+}
