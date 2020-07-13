@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+    <h1>Point Trafic</h1>
+    <p>
+        Dernière version du fichier&nbsp;: <span id="last-version"></span>
+        <br>
+        Dernière vérification&nbsp;: <span id="last-check"></span>
+    </p>
+
+    <audio id="player" src="" type="audio/mp3" controls="controls"></audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script>
+        const podcastUrl = "https://radio.vinci-autoroutes.com/medias/podcast/VOC4.MP3";
+        let lastModified = null;
+
+        const check = () => {
+            console.log('checking last update');
+            axios.get('/check').then((res) => {
+                document.getElementById('last-version').textContent = res.data.lastModified;
+                document.getElementById('last-check').textContent = res.data.date;
+
+                if (lastModified === res.data.lastModified) {
+                    // Already played, do nothing
+                    console.log('already played, do nothing');
+                    return;
+                }
+
+                console.log('new podcast, playing');
+
+                const player = document.getElementById('player');
+                player.pause();
+                player.src = podcastUrl + '?cacheBuster=' + encodeURIComponent(res.data.lastModified);
+                player.play();
+
+                lastModified = res.data.lastModified;
+            }).catch((err) => {
+                console.log('err while checking', err);
+            });
+        };
+
+        check();
+        setInterval(check, 30 * 1000)
+    </script>
+</body>
+</html>
